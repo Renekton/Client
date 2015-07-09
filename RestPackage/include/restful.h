@@ -6,44 +6,27 @@
 #include <map>
 
 #include "curl.h"
+#include "json.h"
+#include "commontype.h"
 
 using namespace std;
 
 #pragma once;
 #pragma comment(lib, "libcurld_imp.lib")
+//#pragma comment(lib, "json_vc71_libmtd.lib")
 
+#ifdef WIN32
 #ifdef RESTFUL_EXPORTS
 #define RESTFUL_API	__declspec(dllexport)
 #else
 #define RESTFUL_API __declspec(dllimport)
 #endif
+#else
+#define RESTFUL_API
+#endif
 
 namespace RESTFULLSPACE
 {
-	typedef enum
-	{
-		HEADER_ACCEPT = 0,
-		HEADER_ACCEPT_CHARSET,
-
-		HEADER_IBASETOKEN,
-		HEADER_NULL = 48
-	}HTTP_HEADER_TYPE_E;					//Http 消息头
-
-	typedef enum
-	{
-		REST_REQUEST_MODE_GET = 0,
-		REST_REQUEST_MODE_POST,
-		REST_REQUEST_MODE_PUT,
-		REST_REQUEST_MODE_DELETE
-	}REST_REQUEST_MODE_E;	//Rest消息模式
-
-	typedef enum
-	{
-		REST_SUCCESS =0,
-		REST_FAIL,
-		REST_INVALID,
-		REST_NULL = -1
-	}REST_RESP_CODE_E;			//Rest返回消息码
 
 	class RESTFUL_API RestResponse
 	{
@@ -69,6 +52,17 @@ namespace RESTFULLSPACE
 		// http发送消息
 		virtual int SendRequest(const string url, const REST_REQUEST_MODE_E mode, RestResponse& response, vector<string>& vecHeaders,	bool isRecvHeader = false);
 
+	private:
+		typedef map<HTTP_HEADER_TYPE_E, string> HeaderMap;
+		HeaderMap m_mapHeader;		// 存放消息头
+
+//		Json::Value m_jsBody;
+
+		std::string m_strPutBodyData;
+
+		std::string m_strResponseData;
+
+		std::vector<std::string> m_vecHeaders;
 	};
 
 }
