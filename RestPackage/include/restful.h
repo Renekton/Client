@@ -11,20 +11,6 @@
 
 using namespace std;
 
-#pragma once;
-#pragma comment(lib, "libcurld_imp.lib")
-//#pragma comment(lib, "json_vc71_libmtd.lib")
-
-#ifdef WIN32
-#ifdef RESTFUL_EXPORTS
-#define RESTFUL_API	__declspec(dllexport)
-#else
-#define RESTFUL_API __declspec(dllimport)
-#endif
-#else
-#define RESTFUL_API
-#endif
-
 namespace RESTFULLSPACE
 {
 
@@ -33,6 +19,9 @@ namespace RESTFULLSPACE
 	public:
 		RestResponse();
 		virtual ~RestResponse();
+
+	public:
+		void setResponseData(std::string& value);
 	};
 
 	class RESTFUL_API RestRequest
@@ -50,19 +39,23 @@ namespace RESTFULLSPACE
 		// http消息体添加属性
 		virtual bool BodyAddProperty(const string name, const string value);
 		// http发送消息
-		virtual int SendRequest(const string url, const REST_REQUEST_MODE_E mode, RestResponse& response, vector<string>& vecHeaders,	bool isRecvHeader = false);
+		virtual int SendRequest(const string url, const REST_REQUEST_MODE_E requestMode, RestResponse& response, vector<string>& vecHeaders,	bool isRecvHeader = false);
 
 	private:
 		typedef map<HTTP_HEADER_TYPE_E, string> HeaderMap;
 		HeaderMap m_mapHeader;		// 存放消息头
 
-//		Json::Value m_jsBody;
+		Json::Value m_jsBody;
 
 		std::string m_strPutBodyData;
 
 		std::string m_strResponseData;
 
 		std::vector<std::string> m_vecHeaders;
+
+		static size_t writeRespBodyData(const void* ptr, size_t size, size_t nmemb, void* stream);		// 回调，写返回消息体内容
+		static size_t writeRespHeadData(const void* ptr, size_t size, size_t nmemb, void* stream);		// 回调，写返回消息头内容
+		static size_t writeRespEmptyHeadData(const void* ptr, size_t size, size_t nmemb, void* stream);		// 回调，不接受返回的消息，写一个空消息头内容
 	};
 
 }

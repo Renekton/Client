@@ -1,54 +1,9 @@
-﻿生成启动时间为 7/10/2015 12:09:16 AM。
-     1>项目“E:\Project\PerProject\RestPackage\sln\restful\restful.vcxproj”在节点 2 上(build 个目标)。
-     1>InitializeBuildStatus:
-         正在对“Debug\restful.unsuccessfulbuild”执行 Touch 任务。
-       ClCompile:
-         g:\VS2010\VC\bin\CL.exe /c /I../../include /I../../../OpenSrc/libcurl/include/curl /I../../../OpenSrc/jsoncpp/include/json /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _WINDOWS /D _USRDLL /D RESTFUL_EXPORTS /D _WINDLL /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt ..\..\source\restful.cpp
-         restful.cpp
-     1>e:\project\perproject\restpackage\include\restful.h(57): warning C4251: “RESTFULLSPACE::RestRequest::m_mapHeader”: class“std::map<_Kty,_Ty>”需要有 dll 接口由 class“RESTFULLSPACE::RestRequest”的客户端使用
-                 with
-                 [
-                     _Kty=RESTFULLSPACE::HTTP_HEADER_TYPE_E,
-                     _Ty=std::string
-                 ]
-     1>e:\project\perproject\restpackage\include\restful.h(61): warning C4251: “RESTFULLSPACE::RestRequest::m_strPutBodyData”: class“std::basic_string<_Elem,_Traits,_Ax>”需要有 dll 接口由 class“RESTFULLSPACE::RestRequest”的客户端使用
-                 with
-                 [
-                     _Elem=char,
-                     _Traits=std::char_traits<char>,
-                     _Ax=std::allocator<char>
-                 ]
-     1>e:\project\perproject\restpackage\include\restful.h(63): warning C4251: “RESTFULLSPACE::RestRequest::m_strResponseData”: class“std::basic_string<_Elem,_Traits,_Ax>”需要有 dll 接口由 class“RESTFULLSPACE::RestRequest”的客户端使用
-                 with
-                 [
-                     _Elem=char,
-                     _Traits=std::char_traits<char>,
-                     _Ax=std::allocator<char>
-                 ]
-     1>e:\project\perproject\restpackage\include\restful.h(65): warning C4251: “RESTFULLSPACE::RestRequest::m_vecHeaders”: class“std::vector<_Ty>”需要有 dll 接口由 class“RESTFULLSPACE::RestRequest”的客户端使用
-                 with
-                 [
-                     _Ty=std::string
-                 ]
-       ManifestResourceCompile:
-         所有输出均为最新。
-       Link:
-         g:\VS2010\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"E:\Project\PerProject\RestPackage\sln\Debug\restful.dll" /INCREMENTAL /NOLOGO /LIBPATH:../../../OpenSrc/libcurl/lib/debug /LIBPATH:../../../OpenSrc/jsoncpp/lib/debug libcurld_imp.lib json_vc71_libmtd.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /ManifestFile:"Debug\restful.dll.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"E:\Project\PerProject\RestPackage\sln\Debug\restful.pdb" /SUBSYSTEM:WINDOWS /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"E:\Project\PerProject\RestPackage\sln\Debug\restful.lib" /MACHINE:X86 /DLL Debug\restful.dll.embed.manifest.res
-         Debug\restful.obj
-            正在创建库 E:\Project\PerProject\RestPackage\sln\Debug\restful.lib 和对象 E:\Project\PerProject\RestPackage\sln\Debug\restful.exp
-       Manifest:
-         C:\Program Files\Microsoft SDKs\Windows\v7.0A\bin\mt.exe /nologo /verbose /out:"Debug\restful.dll.embed.manifest" /manifest Debug\restful.dll.intermediate.manifest
-         C:\Program Files\Microsoft SDKs\Windows\v7.0A\bin\rc.exe /nologo /fo"Debug\restful.dll.embed.manifest.res" Debug\restful_manifest.rc 
-       LinkEmbedManifest:
-         g:\VS2010\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"E:\Project\PerProject\RestPackage\sln\Debug\restful.dll" /INCREMENTAL /NOLOGO /LIBPATH:../../../OpenSrc/libcurl/lib/debug /LIBPATH:../../../OpenSrc/jsoncpp/lib/debug libcurld_imp.lib json_vc71_libmtd.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /ManifestFile:"Debug\restful.dll.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"E:\Project\PerProject\RestPackage\sln\Debug\restful.pdb" /SUBSYSTEM:WINDOWS /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"E:\Project\PerProject\RestPackage\sln\Debug\restful.lib" /MACHINE:X86 /DLL Debug\restful.dll.embed.manifest.res
-         Debug\restful.obj
-            正在创建库 E:\Project\PerProject\RestPackage\sln\Debug\restful.lib 和对象 E:\Project\PerProject\RestPackage\sln\Debug\restful.exp
-         restful.vcxproj -> E:\Project\PerProject\RestPackage\sln\Debug\restful.dll
-       FinalizeBuildStatus:
-         正在删除文件“Debug\restful.unsuccessfulbuild”。
-         正在对“Debug\restful.lastbuildstate”执行 Touch 任务。
-     1>已完成生成项目“E:\Project\PerProject\RestPackage\sln\restful\restful.vcxproj”(build 个目标)的操作。
+﻿生成启动时间为 7/10/2015 11:50:54 PM。
+     1>项目“E:\Project\PerProject\RestPackage\sln\restful\restful.vcxproj”在节点 2 上(clean 个目标)。
+     1>_PrepareForClean:
+         正在删除文件“Debug\restful.lastbuildstate”。
+     1>已完成生成项目“E:\Project\PerProject\RestPackage\sln\restful\restful.vcxproj”(clean 个目标)的操作。
 
 生成成功。
 
-已用时间 00:00:03.96
+已用时间 00:00:00.03

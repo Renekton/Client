@@ -1,6 +1,19 @@
 #ifndef _COMMON_TYPE_H_
 #define _COMMON_TYPE_H_
 
+#pragma once;
+#pragma warning( disable: 4251 )		// 导出类的成员使用STL模板，报warning4251
+
+#ifdef WIN32
+#ifdef RESTFUL_EXPORTS
+#define RESTFUL_API	__declspec(dllexport)
+#else
+#define RESTFUL_API __declspec(dllimport)
+#endif
+#else
+#define RESTFUL_API
+#endif
+
 namespace RESTFULLSPACE
 {
 	typedef enum
@@ -15,13 +28,12 @@ namespace RESTFULLSPACE
 		HEADER_CACHE_CONTROL,
 		HEADER_COOKIE,
 		HEADER_CONNECTION,
-		HEADER_CONTENT_BASE,
 		HEADER_CONTENT_ENCODING,
 		HEADER_CONTENT_LENGTH,
 		HEADER_CONTENT_LOCATION,
 		HEADER_CONTENT_MD5,
 		HEADER_CONTENT_RANGE,
-		HEADER_CONTERN_TYPE,
+		HEADER_CONTENT_TYPE,
 		HEADER_DATE,
 		HEADER_ETAG,
 		HEADER_EXPECT,
@@ -44,6 +56,8 @@ namespace RESTFULLSPACE
 		HEADER_REFERER,
 		HEADER_RETRY_AFTER,
 		HEADER_SERVER,
+		HEADER_TE,
+		HEADER_TRAILER,
 		HEADER_TRANSFER_ENCODING,
 		HEADER_UPGRADE,
 		HEADER_USER_AGENT,
@@ -67,7 +81,7 @@ namespace RESTFULLSPACE
 	{
 		REST_SUCCESS =0,
 		REST_FAIL,
-		REST_INVALID,
+		REST_INVALID_PARAM,
 		REST_NULL = -1
 	}REST_RESP_CODE_E;			//Rest返回消息码
 
@@ -83,7 +97,6 @@ namespace RESTFULLSPACE
 		"Cache-Control",
 		"Cookie",
 		"Connection",
-		"Content-Base",
 		"Content-Encoding",
 		"Content-Length",
 		"Content-Location",
@@ -112,6 +125,8 @@ namespace RESTFULLSPACE
 		"Referer",
 		"Retry-After",
 		"Server",
+		"TE",
+		"Trailer",
 		"Transfer-Encoding",
 		"Upgrade",
 		"User-Agent",
