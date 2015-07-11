@@ -41,6 +41,9 @@ namespace RESTFULLSPACE
 		// http发送消息
 		virtual int SendRequest(const string url, const REST_REQUEST_MODE_E requestMode, RestResponse& response, vector<string>& vecHeaders,	bool isRecvHeader = false);
 
+	public:
+		void setRespBodyData(char* strRespBody);
+		void setRespHeadData(char* strRespHead);
 	private:
 		typedef map<HTTP_HEADER_TYPE_E, string> HeaderMap;
 		HeaderMap m_mapHeader;		// 存放消息头
@@ -53,9 +56,6 @@ namespace RESTFULLSPACE
 
 		std::vector<std::string> m_vecHeaders;
 
-		static size_t writeRespBodyData(const void* ptr, size_t size, size_t nmemb, void* stream);		// 回调，写返回消息体内容
-		static size_t writeRespHeadData(const void* ptr, size_t size, size_t nmemb, void* stream);		// 回调，写返回消息头内容
-		static size_t writeRespEmptyHeadData(const void* ptr, size_t size, size_t nmemb, void* stream);		// 回调，不接受返回的消息，写一个空消息头内容
 	};
 
 }

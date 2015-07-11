@@ -72,20 +72,75 @@ namespace RESTFULLSPACE
 
 	bool RestRequest::BodyAddProperty(const string name, const string value)
 	{
+		Json::Value jsValue = value;
+		m_jsBody[name.c_str()] = jsValue;
 		return true;
 	}
 
-	size_t RestRequest::writeRespBodyData(const void* ptr, size_t size, size_t nmemb, void* stream)
+	void RestRequest::setRespBodyData(char* strResp)
 	{
+		m_strResponseData = m_strResponseData + strResp;
+	}
+
+	void RestRequest::setRespHeadData(char* strRespHead)
+	{
+		m_vecHeaders.push_back(strRespHead);
+	}
+
+	size_t writeRespBodyData(const void* ptr, size_t size, size_t nmemb, void* stream)
+	{
+		size_t iLength = size * nmemb;
+		RestRequest* ptrReq = (RestRequest*)stream;
+		if (NULL == ptrReq)
+		{
+			return iLength;
+		}
+
+		char* recvData = new char[iLength +1];
+		memset(recvData, 0 , sizeof(char)* (iLength+1));
+
+		if (NULL != recvData)
+		{
+			memcpy(recvData, ptr, iLength);
+			recvData[iLength + 1] = '\0';
+
+			ptrReq->setRespBodyData(recvData);
+
+			delete[] recvData;
+			recvData = NULL;
+			return iLength;
+		}
 		return 0;
 	}
 
-	size_t RestRequest::writeRespHeadData(const void* ptr, size_t size, size_t nmemb, void* stream)
+	size_t writeRespHeadData(const void* ptr, size_t size, size_t nmemb, void* stream)
 	{
+		size_t iLength = size * nmemb;
+		RestRequest* ptrReq = (RestRequest*)stream;
+		if (NULL == ptrReq)
+		{
+			return iLength;
+		}
+
+		char* recvData = new char[iLength +1];
+		memset(recvData, 0 , sizeof(char)* (iLength+1));
+
+		if (NULL != recvData)
+		{
+			memcpy(recvData, ptr, iLength);
+			recvData[iLength + 1] = '\0';
+
+			ptrReq->setRespHeadData(recvData);
+
+			delete[] recvData;
+			recvData = NULL;
+			return iLength;
+		}
 		return 0;
+		
 	}
 
-	size_t RestRequest::writeRespEmptyHeadData(const void* ptr, size_t size, size_t nmemb, void* stream)
+	size_t writeRespEmptyHeadData(const void* ptr, size_t size, size_t nmemb, void* stream)
 	{
 		return 0;
 	}
@@ -135,7 +190,7 @@ namespace RESTFULLSPACE
 		}
 		else
 		{
-			curl_easy_setopt(hCurl, CURLOPT_HEADERFUNCTION, writeRespHeadData);	// 不接受返回的消息头，所以写一个空的消息头
+			curl_easy_setopt(hCurl, CURLOPT_HEADERFUNCTION, writeRespEmptyHeadData);	// 不接受返回的消息头，所以写一个空的消息头
 		}
 		curl_easy_setopt(hCurl, CURLOPT_WRITEDATA, this);
 
@@ -148,12 +203,23 @@ namespace RESTFULLSPACE
 		case REST_REQUEST_MODE_GET:
 			curl_easy_setopt(hCurl, CURLOPT_HTTPGET, 1L);
 			break;
+
 		case REST_REQUEST_MODE_POST:
+			strBodyData = m_jsBody.toStyledString();
+			curl_easy_setopt(hCurl, CURLOPT_HTTPPOST, 1L);
+			curl_easy_setopt(hCurl, CURLOPT_POSTFIELDS, strBodyData);
 			break;
+
 		case REST_REQUEST_MODE_PUT:
+			strBodyData = m_jsBody.toStyledString();
+			curl_easy_setopt(hCurl, CURLOPT_PUT, 1L);
+			curl_easy_setopt(hCurl, CURLOPT_POSTFIELDS, strBodyData);		// 此处待测试
 			break;
+
 		case REST_REQUEST_MODE_DELETE:
+			curl_easy_setopt(hCurl, CURLOPT_CUSTOMREQUEST, "DELETE");
 			break;
+
 		default:
 			curl_slist_free_all(ptrHeaders);
 			curl_easy_cleanup(hCurl);
@@ -171,7 +237,8 @@ namespace RESTFULLSPACE
 		{
 			if(isRecvHeader)
 			{
-
+				vecHeaders.assign(m_vecHeaders.begin(), m_vecHeaders.end());
+				m_vecHeaders.clear();
 			}
 
 			curl_slist_free_all(ptrHeaders);
