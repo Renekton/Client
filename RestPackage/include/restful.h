@@ -13,7 +13,7 @@ using namespace std;
 
 namespace RESTFULLSPACE
 {
-
+ 
 	class RESTFUL_API RestResponse
 	{
 	public:

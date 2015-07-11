@@ -10,7 +10,7 @@ namespace RESTFULLSPACE
 
 	RestResponse::~RestResponse()
 	{
-
+ 
 	}
 
 	void RestResponse::setResponseData(std::string& value)
