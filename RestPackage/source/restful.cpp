@@ -5,17 +5,22 @@ namespace RESTFULLSPACE
 
 	RestResponse::RestResponse()
 	{
-
+		m_strRespData.clear();
 	}
 
 	RestResponse::~RestResponse()
 	{
-  
+		m_strRespData.clear();
 	}
 
-	void RestResponse::setResponseData(std::string& value)
+	void RestResponse::setResponseData(std::string value)
 	{
+		m_strRespData = value;
+	}
 
+	std::string RestResponse::getResponseData()
+	{
+		return m_strRespData;
 	}
 
 	RestRequest::RestRequest():m_jsBody(0)
@@ -87,6 +92,11 @@ namespace RESTFULLSPACE
 		m_vecHeaders.push_back(strRespHead);
 	}
 
+	std::string RestRequest::getPutBodyData()
+	{
+		return m_strPutBodyData;
+	}
+
 	size_t writeRespBodyData(const void* ptr, size_t size, size_t nmemb, void* stream)
 	{
 		size_t iLength = size * nmemb;
@@ -142,7 +152,26 @@ namespace RESTFULLSPACE
 
 	size_t writeRespEmptyHeadData(const void* ptr, size_t size, size_t nmemb, void* stream)
 	{
-		return 0;
+		return size * nmemb;
+	}
+
+	size_t readCallBack(void* ptr, size_t size, size_t nmemb, void* stream)
+	{
+		int iLength = size * nmemb;
+
+		RestRequest* ptrReq = (RestRequest*)stream;
+		if (NULL == ptrReq)
+		{
+			return iLength;
+		}
+
+		std::string tmpStrPutBody = ptrReq->getPutBodyData();		// 获取put操作时候的body
+		if (tmpStrPutBody.length() > (size_t)iLength)
+		{
+			return 0;
+		}
+		memcpy(ptr, tmpStrPutBody.c_str(), tmpStrPutBody.length());		// 将body存入到ptr中
+		return tmpStrPutBody.length();
 	}
 
 	int RestRequest::SendRequest(
@@ -182,7 +211,7 @@ namespace RESTFULLSPACE
 		curl_easy_setopt(hCurl, CURLOPT_HTTPHEADER, ptrHeaders);
 
 		curl_easy_setopt(hCurl, CURLOPT_WRITEFUNCTION, writeRespBodyData);	// 将返回消息体写入
-		curl_easy_setopt(hCurl, CURLOPT_WRITEDATA, this);	// 用该类的对象，来接受消息
+		curl_easy_setopt(hCurl, CURLOPT_WRITEDATA, this);	// 用该类的对象，作为第四个参数，传入回调，来接受消息
 
 		if (isRecvHeader)		// 是否接受返回的消息头
 		{
@@ -211,9 +240,11 @@ namespace RESTFULLSPACE
 			break;
 
 		case REST_REQUEST_MODE_PUT:
-			strBodyData = m_jsBody.toStyledString();
+			m_strPutBodyData = m_jsBody.toStyledString();
 			curl_easy_setopt(hCurl, CURLOPT_PUT, 1L);
-			curl_easy_setopt(hCurl, CURLOPT_POSTFIELDS, strBodyData);		// 此处待测试
+			curl_easy_setopt(hCurl, CURLOPT_READDATA, this);
+			curl_easy_setopt(hCurl, CURLOPT_READFUNCTION, readCallBack);
+			curl_easy_setopt(hCurl, CURLOPT_INFILESIZE_LARGE, (curl_off_t)(m_strPutBodyData.length()));		// 此处待测试
 			break;
 
 		case REST_REQUEST_MODE_DELETE:

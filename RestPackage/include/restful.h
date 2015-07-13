@@ -21,7 +21,12 @@ namespace RESTFULLSPACE
 		virtual ~RestResponse();
 
 	public:
-		void setResponseData(std::string& value);
+		std::string getResponseData();		// 获取rest返回消息
+		void setResponseData(std::string value);
+		
+
+	private:
+		std::string m_strRespData;
 	};
 
 	class RESTFUL_API RestRequest
@@ -44,6 +49,8 @@ namespace RESTFULLSPACE
 	public:
 		void setRespBodyData(char* strRespBody);
 		void setRespHeadData(char* strRespHead);
+		std::string getPutBodyData();
+
 	private:
 		typedef map<HTTP_HEADER_TYPE_E, string> HeaderMap;
 		HeaderMap m_mapHeader;		// 存放消息头
